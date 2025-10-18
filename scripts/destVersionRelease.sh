@@ -68,11 +68,16 @@ function extract_version() {
     
     echo -e "List temp contents"
     ls -l ${temp_path}/temp
-    
-    echo -e "Getting version......"
-    dest_version=`ls -l ${temp_path}/temp | awk '{print $9}' | grep '^\[[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\]$'`
 }
 
+function getVersion(){
+    printf "#%.0s" {1..60}
+    echo 
+    echo -e "## \033[1;33mGetting version......\033[0m"
+    printf "#%.0s" {1..60}
+    echo
+    dest_version=`ls -l ${temp_path}/temp | awk '{print $9}' | grep '^\[[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\]$'`
+}
 
 # rename and replace
 function prepare_commit() {
@@ -120,6 +125,7 @@ function main() {
     fi
     ## if not the newest
     extract_version
+    getVersion
     prepare_commit
 
     gh release create v$dest_version ./WeChatSetup/$dest_version/WeChatSetup-$dest_version.exe -F ./WeChatSetup/$dest_version/WeChatSetup-$dest_version.exe.sha256 -t "Wechat v$dest_version"
