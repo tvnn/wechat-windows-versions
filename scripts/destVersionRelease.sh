@@ -69,7 +69,8 @@ function extract_version() {
     # dest_version=`awk '/MinVersion/{ print $2 }' ${temp_path}/temp/$outfile | sed -e 's/^.*="//g' -e 's/".*$//g'`
     
     # new version
-    7z x ${temp_path}/WeChatSetup.exe -o${temp_path}/temp
+    7z x ${temp_path}/WeChatSetup.exe -o${temp_path}/install
+    7z x ${temp_path}/install/install.7z -o${temp_path}/temp
     dest_version=`ls -l ${temp_path}/temp | awk '{print $9}' | grep '^\[[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\]$'`
 }
 
