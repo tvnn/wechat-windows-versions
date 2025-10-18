@@ -76,7 +76,11 @@ function getVersion(){
     echo -e "## \033[1;33mGetting version......\033[0m"
     printf "#%.0s" {1..60}
     echo
-    dest_version=`ls -l ${temp_path}/temp | awk '{print $9}' | grep '^\[[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\]$'`
+    
+    rm -r ${temp_path}/temp/Uninstall.exe
+    rm -r ${temp_path}/temp/Weixin.exe
+    
+    dest_version=`ls ${temp_path}/temp`
 }
 
 # rename and replace
