@@ -62,10 +62,10 @@ function extract_version() {
     echo 
     
     # new version
-    7z x ${temp_path}/WeChatSetup.exe -o ${temp_path}/install
+    7z x ${temp_path}/WeChatSetup.exe -o${temp_path}/install
     ls ${temp_path}
     ls ${temp_path}/install
-    7z x ${temp_path}/install/install.7z -o ${temp_path}/temp
+    7z x ${temp_path}/install/install.7z -o${temp_path}/temp
     ls ${temp_path}/temp
     dest_version=`ls -l ${temp_path}/temp | awk '{print $9}' | grep '^\[[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\]$'`
 }
