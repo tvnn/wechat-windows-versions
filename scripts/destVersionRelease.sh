@@ -3,7 +3,6 @@
 set -eo pipefail
 
 temp_path="WeChatSetup/temp"
-latest_path="WeChatSetup/latest"
 
 download_link="$1"
 if [ -z "$1" ]; then
@@ -62,15 +61,12 @@ function extract_version() {
     printf "#%.0s" {1..60}
     echo 
     
-    # old version
-    #local outfile=`7z l ${temp_path}/WeChatSetup.exe | grep improve.xml | awk 'NR ==1 { print $NF }'`
-    ## 7z x ${temp_path}/WeChatSetup.exe -o${temp_path}/temp "\$R5/Tencent/WeChat/improve.xml"
-    #7z x ${temp_path}/WeChatSetup.exe -o${temp_path}/temp $outfile
-    # dest_version=`awk '/MinVersion/{ print $2 }' ${temp_path}/temp/$outfile | sed -e 's/^.*="//g' -e 's/".*$//g'`
-    
     # new version
-    7z x ${temp_path}/WeChatSetup.exe -o${temp_path}/install
-    7z x ${temp_path}/install/install.7z -o${temp_path}/temp
+    7z x ${temp_path}/WeChatSetup.exe -o ${temp_path}/install
+    ls ${temp_path}
+    ls ${temp_path}/install
+    7z x ${temp_path}/install/install.7z -o ${temp_path}/temp
+    ls ${temp_path}/temp
     dest_version=`ls -l ${temp_path}/temp | awk '{print $9}' | grep '^\[[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\]$'`
 }
 
@@ -106,6 +102,7 @@ function clean_data() {
 function main() {
     # rm -rfv WeChatSetup/*
     mkdir -p ${temp_path}/temp
+    mkdir ${temp_path}/install
     login_gh
     ## https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-Readme.md
     # install_depends
