@@ -7,8 +7,7 @@ temp_path="WeChatSetup/temp"
 download_link="$1"
 if [ -z "$1" ]; then
     >&2 echo -e "Missing argument. Using default download link"
-    download_link="https://dldir1v6.qq.com/weixin/Universal/Windows/WeChatWin.exe"
-fi
+    download_link= $(wget "https://weixin.qq.com/api/updates_items?platform=windows&version=411" | jq ".downloadUrl")
 
 function install_depends() {
     printf "#%.0s" {1..60}
