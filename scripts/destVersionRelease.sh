@@ -120,10 +120,8 @@ function main() {
     # rm -rfv WeChatSetup/*
     mkdir -p ${temp_path}/temp
     mkdir ${temp_path}/install
-    touch ${temp_path}/updates.log
     
     login_gh
-    install_depends
     download_wechat
 
     now_sum256=`shasum -a 256 ${temp_path}/WeChatSetup.exe | awk '{print $1}'`
