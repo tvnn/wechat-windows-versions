@@ -4,10 +4,6 @@ set -eo pipefail
 
 temp_path="WeChatSetup/temp"
 
-echo -e "Get download link"
-wget "https://weixin.qq.com/api/updates_items?platform=windows&version=411" -O ${temp_path}/updates.log
-download_link= $(cat ${temp_path}/updates.log | jq ".downloadUrl")
-
 function install_depends() {
     printf "#%.0s" {1..60}
     echo 
@@ -15,7 +11,7 @@ function install_depends() {
     printf "#%.0s" {1..60}
     echo 
 
-    apt install -y p7zip-full p7zip-rar libdigest-sha-perl wget curl git
+    apt install -y p7zip-full p7zip-rar libdigest-sha-perl wget curl git jq
 }
 
 function login_gh() {
@@ -39,6 +35,17 @@ function login_gh() {
 }
 
 function download_wechat() {
+
+    printf "#%.0s" {1..60}
+    echo 
+    echo -e "## \033[1;33mGet download url...\033[0m"
+    printf "#%.0s" {1..60}
+    echo 
+    wget "https://weixin.qq.com/api/updates_items?platform=windows&version=411" -O ${temp_path}/updates.log
+    download_link= `cat ${temp_path}/updates.log | jq ".downloadUrl"`
+
+    echo $download_link
+    
     printf "#%.0s" {1..60}
     echo 
     echo -e "## \033[1;33mDownloading the newest WechatSetup...\033[0m"
@@ -113,9 +120,10 @@ function main() {
     # rm -rfv WeChatSetup/*
     mkdir -p ${temp_path}/temp
     mkdir ${temp_path}/install
+    touch ${temp_path}/updates.log
+    
     login_gh
-    ## https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-Readme.md
-    # install_depends
+    install_depends
     download_wechat
 
     now_sum256=`shasum -a 256 ${temp_path}/WeChatSetup.exe | awk '{print $1}'`
