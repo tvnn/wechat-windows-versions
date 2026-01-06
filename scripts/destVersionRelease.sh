@@ -42,7 +42,7 @@ function download_wechat() {
     printf "#%.0s" {1..60}
     echo 
     wget "https://weixin.qq.com/api/updates_items?platform=windows&version=411" -O ${temp_path}/updates.log
-    download_link= cat ${temp_path}/updates.log | jq ".downloadUrl"
+    download_link=$(cat "${temp_path}/updates.log" | jq -r ".downloadUrl")
     
     printf "#%.0s" {1..60}
     echo 
