@@ -4,10 +4,9 @@ set -eo pipefail
 
 temp_path="WeChatSetup/temp"
 
-download_link="$1"
-if [ -z "$1" ]; then
-    >&2 echo -e "Missing argument. Using default download link"
-    download_link= $(wget "https://weixin.qq.com/api/updates_items?platform=windows&version=411" | jq ".downloadUrl")
+echo -e "Get download link"
+wget "https://weixin.qq.com/api/updates_items?platform=windows&version=411" -O ${temp_path}/updates.log
+download_link= $(cat ${temp_path}/updates.log | jq ".downloadUrl")
 
 function install_depends() {
     printf "#%.0s" {1..60}
